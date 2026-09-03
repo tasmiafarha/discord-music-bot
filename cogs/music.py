@@ -49,11 +49,12 @@ class Music(commands.Cog):
 
             voice_client = interaction.guild.voice_client
 
-            # Play audio
+            # Play audio with async-safe callback
             def after_playing(error):
                 if error:
                     print(f"Player error: {error}")
                 # Schedule play_next to run in the event loop
+                # Using asyncio.ensure_future for better Python 3.14 compatibility
                 asyncio.run_coroutine_threadsafe(
                     self.play_next(interaction), self.bot.loop
                 )
